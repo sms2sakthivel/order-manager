@@ -1,0 +1,240 @@
+definitions:
+  fiber.Error:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  model.Cart:
+    properties:
+      cartItems:
+        items:
+          $ref: '#/definitions/model.CartItem'
+        type: array
+      id:
+        type: integer
+    type: object
+  model.CartItem:
+    properties:
+      discount:
+        type: integer
+      id:
+        type: integer
+      product:
+        allOf:
+        - $ref: '#/definitions/model.Product'
+        description: Foreign key constraints
+      productID:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  model.OrderCreateRequest:
+    properties:
+      cart_id:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - cart_id
+    - user_id
+    type: object
+  model.OrderResponse:
+    properties:
+      cart:
+        $ref: '#/definitions/model.Cart'
+      cart_id:
+        type: integer
+      order_id:
+        type: integer
+      user:
+        $ref: '#/definitions/model.User'
+      user_id:
+        type: integer
+    type: object
+  model.Product:
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      subCategory:
+        type: string
+    type: object
+  model.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      passwordHash:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Returns basic information about the Order Service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Order Service Info
+      tags:
+      - General
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.OrderResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Get All Orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Add a new order to the system
+      parameters:
+      - description: Order details
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.OrderCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.OrderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Create a New Order
+      tags:
+      - Orders
+  /orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a order by their ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Delete a Order
+      tags:
+      - Orders
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a order by their ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OrderResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Get Order by ID
+      tags:
+      - Orders
+    put:
+      consumes:
+      - application/json
+      description: Modify details of an existing order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated order details
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/model.OrderCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OrderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Update an Existing Order
+      tags:
+      - Orders
+swagger: "2.0"
