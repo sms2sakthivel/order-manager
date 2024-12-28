@@ -65,7 +65,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -103,13 +103,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -147,13 +147,13 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -198,19 +198,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -243,7 +243,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -275,7 +275,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -313,13 +313,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -357,13 +357,13 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -408,19 +408,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -453,7 +453,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/fiber.Error"
+                            "$ref": "#/definitions/github_com_gofiber_fiber_v2.Error"
                         }
                     }
                 }
@@ -461,7 +461,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "fiber.Error": {
+        "github_com_gofiber_fiber_v2.Error": {
             "type": "object",
             "properties": {
                 "code": {
@@ -469,31 +469,6 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string"
-                }
-            }
-        },
-        "model.Cart": {
-            "type": "object",
-            "properties": {
-                "cartItems": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.CartItem"
-                    }
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "user": {
-                    "description": "Foreign key constraints",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.User"
-                        }
-                    ]
-                },
-                "userID": {
-                    "type": "integer"
                 }
             }
         },
@@ -511,31 +486,6 @@ const docTemplate = `{
                     }
                 },
                 "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "model.CartItem": {
-            "type": "object",
-            "properties": {
-                "discount": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "product": {
-                    "description": "Foreign key constraints",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/model.Product"
-                        }
-                    ]
-                },
-                "productID": {
-                    "type": "integer"
-                },
-                "quantity": {
                     "type": "integer"
                 }
             }
@@ -568,9 +518,6 @@ const docTemplate = `{
                 "discount": {
                     "type": "integer"
                 },
-                "product": {
-                    "$ref": "#/definitions/model.Product"
-                },
                 "product_id": {
                     "type": "integer"
                 },
@@ -581,10 +528,6 @@ const docTemplate = `{
         },
         "model.CartResponse": {
             "type": "object",
-            "required": [
-                "cart_items",
-                "user_id"
-            ],
             "properties": {
                 "cart_id": {
                     "type": "integer"
@@ -637,7 +580,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cart": {
-                    "$ref": "#/definitions/model.Cart"
+                    "$ref": "#/definitions/model.CartResponse"
                 },
                 "cart_id": {
                     "type": "integer"
@@ -655,46 +598,6 @@ const docTemplate = `{
                 },
                 "order_id": {
                     "type": "integer"
-                }
-            }
-        },
-        "model.Product": {
-            "type": "object",
-            "properties": {
-                "brand": {
-                    "type": "string"
-                },
-                "category": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "subCategory": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.User": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "passwordHash": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         }

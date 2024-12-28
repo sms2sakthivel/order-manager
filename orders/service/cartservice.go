@@ -36,14 +36,42 @@ func (s *CartService) GetCart(id uint) (*model.CartResponse, error) {
 }
 
 func (s *CartService) CreateCart(cartReq *model.CartCreateRequest) (*model.CartResponse, error) {
+	_, err := GetUserByID(cartReq.UserID)
+	if err != nil {
+		return nil, err
+	}
 	cart := cartReq.GetDBObject()
-	err := s.Repo.CreateCart(cart)
+	var productIds []uint = []uint{}
+	for _, cartItem := range cart.CartItems {
+		productIds = append(productIds, cartItem.ProductID)
+	}
+	for _, productID := range productIds {
+		_, err = GetProductByID(productID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = s.Repo.CreateCart(cart)
 	return cart.GetAPIResponseObject(), err
 }
 
 func (s *CartService) UpdateCart(cartReq *model.CartUpdateRequest) (*model.CartResponse, error) {
+	_, err := GetUserByID(cartReq.UserID)
+	if err != nil {
+		return nil, err
+	}
 	cart := cartReq.GetDBObject()
-	err := s.Repo.UpdateCart(cart)
+	var productIds []uint = []uint{}
+	for _, cartItem := range cart.CartItems {
+		productIds = append(productIds, cartItem.ProductID)
+	}
+	for _, productID := range productIds {
+		_, err = GetProductByID(productID)
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = s.Repo.UpdateCart(cart)
 	return cart.GetAPIResponseObject(), err
 }
 
