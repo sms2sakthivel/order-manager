@@ -36,21 +36,33 @@ func (s *CartService) GetCart(id uint) (*model.CartResponse, error) {
 }
 
 func (s *CartService) CreateCart(cartReq *model.CartCreateRequest) (*model.CartResponse, error) {
+	// Step 1: Check if the UserID is Valid
 	_, err := GetUserByID(cartReq.UserID)
 	if err != nil {
 		return nil, err
 	}
 	cart := cartReq.GetDBObject()
+
+	// Step 2: Check if all the ProductIDs are Valid
+	var products map[uint]*model.ProductResponse = map[uint]*model.ProductResponse{}
 	var productIds []uint = []uint{}
 	for _, cartItem := range cart.CartItems {
 		productIds = append(productIds, cartItem.ProductID)
 	}
 	for _, productID := range productIds {
-		_, err = GetProductByID(productID)
+		product, err := GetProductByID(productID)
 		if err != nil {
 			return nil, err
 		}
+		products[productID] = product
 	}
+
+	// Step 3: Calculate Total Cart Value
+	var value uint = 0
+	for _, item := range cart.CartItems {
+		value += ((products[item.ProductID].Price * (100 - uint(item.Discount))) / 100) * uint(item.Quantity)
+	}
+	cart.CartValue = value
 	err = s.Repo.CreateCart(cart)
 	return cart.GetAPIResponseObject(), err
 }

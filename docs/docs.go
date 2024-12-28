@@ -538,6 +538,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.CartItemResponse"
                     }
                 },
+                "cart_value": {
+                    "type": "integer"
+                },
                 "user_id": {
                     "type": "integer"
                 }

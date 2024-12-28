@@ -16,6 +16,7 @@ type CartResponse struct {
 	ID        uint               `json:"cart_id"`
 	CartItems []CartItemResponse `json:"cart_items"`
 	UserID    uint               `json:"user_id"`
+	CartValue uint               `json:"cart_value"`
 }
 
 func (ccr *CartCreateRequest) GetDBObject() *Cart {

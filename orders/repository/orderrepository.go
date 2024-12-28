@@ -22,13 +22,26 @@ func (repo *GormOrderRepository) GetOrderByID(id uint) (*model.Order, error) {
 }
 
 func (repo *GormOrderRepository) CreateOrder(order *model.Order) error {
+	var cart model.Cart
+	err := repo.DB.Preload("CartItems").First(&cart, order.CartID).Error
+	if err != nil {
+		return err
+	}
+	order.Cart = cart
 	return repo.DB.Create(order).Error
 }
 
 func (repo *GormOrderRepository) UpdateOrder(order *model.Order) error {
+	var cart model.Cart = model.Cart{}
+	err := repo.DB.Preload("Cart.CartItems").First(&cart, order.CartID).Error
+	if err != nil {
+		return err
+	}
+	order.Cart = cart
 	return repo.DB.Save(order).Error
 }
 
 func (repo *GormOrderRepository) DeleteOrder(id uint) error {
-	return repo.DB.Delete(&model.Order{}, id).Error
+	err := repo.DB.Delete(&model.Order{ID: id}).Error
+	return err
 }

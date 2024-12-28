@@ -8,6 +8,7 @@ type Cart struct {
 	ID        uint       `gorm:"primaryKey"`
 	UserID    uint       `gorm:"not null"`
 	CartItems []CartItem `gorm:"many2many:cart_items_map;"`
+	CartValue uint       `gorm:"not null"`
 }
 
 func (cart *Cart) GetAPIResponseObject() *CartResponse {
@@ -15,5 +16,5 @@ func (cart *Cart) GetAPIResponseObject() *CartResponse {
 	for _, cartItem := range cart.CartItems {
 		cartItemResponses = append(cartItemResponses, *cartItem.GetAPIResponseObject())
 	}
-	return &CartResponse{ID: cart.ID, CartItems: cartItemResponses, UserID: cart.UserID}
+	return &CartResponse{ID: cart.ID, CartItems: cartItemResponses, UserID: cart.UserID, CartValue: cart.CartValue}
 }
