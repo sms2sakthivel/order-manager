@@ -14,6 +14,24 @@ definitions:
         type: array
       id:
         type: integer
+      user:
+        allOf:
+        - $ref: '#/definitions/model.User'
+        description: Foreign key constraints
+      userID:
+        type: integer
+    type: object
+  model.CartCreateRequest:
+    properties:
+      cart_items:
+        items:
+          $ref: '#/definitions/model.CartItemRequest'
+        type: array
+      user_id:
+        type: integer
+    required:
+    - cart_items
+    - user_id
     type: object
   model.CartItem:
     properties:
@@ -30,15 +48,67 @@ definitions:
       quantity:
         type: integer
     type: object
-  model.OrderCreateRequest:
+  model.CartItemRequest:
+    properties:
+      discount:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - discount
+    - product_id
+    - quantity
+    type: object
+  model.CartItemResponse:
+    properties:
+      cart_item_id:
+        type: integer
+      discount:
+        type: integer
+      product:
+        $ref: '#/definitions/model.Product'
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  model.CartResponse:
     properties:
       cart_id:
         type: integer
+      cart_items:
+        items:
+          $ref: '#/definitions/model.CartItemResponse'
+        type: array
+      user_id:
+        type: integer
+    required:
+    - cart_items
+    - user_id
+    type: object
+  model.CartUpdateRequest:
+    properties:
+      cart_id:
+        type: integer
+      cart_items:
+        items:
+          $ref: '#/definitions/model.CartItemRequest'
+        type: array
       user_id:
         type: integer
     required:
     - cart_id
+    - cart_items
     - user_id
+    type: object
+  model.OrderCreateRequest:
+    properties:
+      cart_id:
+        type: integer
+    required:
+    - cart_id
     type: object
   model.OrderResponse:
     properties:
@@ -48,9 +118,12 @@ definitions:
         type: integer
       order_id:
         type: integer
-      user:
-        $ref: '#/definitions/model.User'
-      user_id:
+    type: object
+  model.OrderUpdateRequest:
+    properties:
+      cart_id:
+        type: integer
+      order_id:
         type: integer
     type: object
   model.Product:
@@ -98,6 +171,145 @@ paths:
       summary: Order Service Info
       tags:
       - General
+  /carts:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all carts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.CartResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Get All Carts
+      tags:
+      - Carts
+    post:
+      consumes:
+      - application/json
+      description: Add a new cart to the system
+      parameters:
+      - description: Cart details
+        in: body
+        name: cart
+        required: true
+        schema:
+          $ref: '#/definitions/model.CartCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.CartResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Create a New Cart
+      tags:
+      - Carts
+  /carts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a cart by their ID
+      parameters:
+      - description: Cart ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Delete a Cart
+      tags:
+      - Carts
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a cart by their ID
+      parameters:
+      - description: Cart ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CartResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Get Cart by ID
+      tags:
+      - Carts
+    put:
+      consumes:
+      - application/json
+      description: Modify details of an existing cart
+      parameters:
+      - description: Cart ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated cart details
+        in: body
+        name: cart
+        required: true
+        schema:
+          $ref: '#/definitions/model.CartUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CartResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/fiber.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/fiber.Error'
+      summary: Update an Existing Cart
+      tags:
+      - Carts
   /orders:
     get:
       consumes:
@@ -214,7 +426,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/model.OrderCreateRequest'
+          $ref: '#/definitions/model.OrderUpdateRequest'
       produces:
       - application/json
       responses:

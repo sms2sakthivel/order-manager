@@ -4,20 +4,9 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
 	"github.com/sms2sakthivel/order-manager/orders/model"
 	"github.com/sms2sakthivel/order-manager/orders/service"
 )
-
-func RegisterRoutes(app *fiber.App, service *service.OrderService) {
-	app.Get("/", OrderServiceInfo)
-	app.Get("/swagger/*", swagger.HandlerDefault)
-	app.Get("/orders", func(c *fiber.Ctx) error { return GetAllOrders(c, service) })
-	app.Get("/orders/:id", func(c *fiber.Ctx) error { return GetOrderByID(c, service) })
-	app.Post("/orders", func(c *fiber.Ctx) error { return CreateOrder(c, service) })
-	app.Put("/orders/:id", func(c *fiber.Ctx) error { return UpdateOrder(c, service) })
-	app.Delete("/orders/:id", func(c *fiber.Ctx) error { return DeleteOrder(c, service) })
-}
 
 // OrderServiceInfo returns information about the Order Service
 //
@@ -84,11 +73,12 @@ func GetOrderByID(c *fiber.Ctx, service *service.OrderService) error {
 // @Failure      500   {object}  fiber.Error
 // @Router       /orders [post]
 func CreateOrder(c *fiber.Ctx, service *service.OrderService) error {
-	var order model.Order
-	if err := c.BodyParser(&order); err != nil {
+	var orderReq model.OrderCreateRequest
+	if err := c.BodyParser(&orderReq); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid input")
 	}
-	if err := service.CreateOrder(&order); err != nil {
+	order, err := service.CreateOrder(&orderReq)
+	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	return c.Status(fiber.StatusCreated).JSON(order)
@@ -102,7 +92,7 @@ func CreateOrder(c *fiber.Ctx, service *service.OrderService) error {
 // @Accept       json
 // @Produce      json
 // @Param        id    path      int         true  "Order ID"
-// @Param        order  body      model.OrderCreateRequest  true  "Updated order details"
+// @Param        order  body      model.OrderUpdateRequest  true  "Updated order details"
 // @Success      200   {object}  model.OrderResponse
 // @Failure      400   {object}  fiber.Error
 // @Failure      404   {object}  fiber.Error
@@ -110,12 +100,13 @@ func CreateOrder(c *fiber.Ctx, service *service.OrderService) error {
 // @Router       /orders/{id} [put]
 func UpdateOrder(c *fiber.Ctx, service *service.OrderService) error {
 	id, _ := strconv.Atoi(c.Params("id"))
-	var order model.Order
-	if err := c.BodyParser(&order); err != nil {
+	var orderReq model.OrderUpdateRequest
+	if err := c.BodyParser(&orderReq); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid input")
 	}
-	order.ID = uint(id)
-	if err := service.UpdateOrder(&order); err != nil {
+	orderReq.ID = uint(id)
+	order, err := service.UpdateOrder(&orderReq)
+	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(order)

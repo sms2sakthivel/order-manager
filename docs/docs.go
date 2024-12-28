@@ -39,6 +39,216 @@ const docTemplate = `{
                 }
             }
         },
+        "/carts": {
+            "get": {
+                "description": "Retrieve a list of all carts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Get All Carts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.CartResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add a new cart to the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Create a New Cart",
+                "parameters": [
+                    {
+                        "description": "Cart details",
+                        "name": "cart",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CartCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.CartResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/carts/{id}": {
+            "get": {
+                "description": "Retrieve a cart by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Get Cart by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cart ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CartResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Modify details of an existing cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Update an Existing Cart",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cart ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated cart details",
+                        "name": "cart",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CartUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CartResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a cart by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Delete a Cart",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Cart ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiber.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/orders": {
             "get": {
                 "description": "Retrieve a list of all orders",
@@ -184,7 +394,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.OrderCreateRequest"
+                            "$ref": "#/definitions/model.OrderUpdateRequest"
                         }
                     }
                 ],
@@ -273,6 +483,35 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "user": {
+                    "description": "Foreign key constraints",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartCreateRequest": {
+            "type": "object",
+            "required": [
+                "cart_items",
+                "user_id"
+            ],
+            "properties": {
+                "cart_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CartItemRequest"
+                    }
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -301,17 +540,95 @@ const docTemplate = `{
                 }
             }
         },
-        "model.OrderCreateRequest": {
+        "model.CartItemRequest": {
             "type": "object",
             "required": [
-                "cart_id",
+                "discount",
+                "product_id",
+                "quantity"
+            ],
+            "properties": {
+                "discount": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartItemResponse": {
+            "type": "object",
+            "properties": {
+                "cart_item_id": {
+                    "type": "integer"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "product": {
+                    "$ref": "#/definitions/model.Product"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartResponse": {
+            "type": "object",
+            "required": [
+                "cart_items",
                 "user_id"
             ],
             "properties": {
                 "cart_id": {
                     "type": "integer"
                 },
+                "cart_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CartItemResponse"
+                    }
+                },
                 "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartUpdateRequest": {
+            "type": "object",
+            "required": [
+                "cart_id",
+                "cart_items",
+                "user_id"
+            ],
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "cart_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CartItemRequest"
+                    }
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderCreateRequest": {
+            "type": "object",
+            "required": [
+                "cart_id"
+            ],
+            "properties": {
+                "cart_id": {
                     "type": "integer"
                 }
             }
@@ -327,11 +644,16 @@ const docTemplate = `{
                 },
                 "order_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.OrderUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
                 },
-                "user": {
-                    "$ref": "#/definitions/model.User"
-                },
-                "user_id": {
+                "order_id": {
                     "type": "integer"
                 }
             }
