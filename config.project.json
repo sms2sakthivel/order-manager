@@ -1,5 +1,16 @@
 {
-    "project_name": "Order Management Service",
-    "guid": "B4F9D636-E048-4F57-A4FA-AE904B6BFCCB",
-    "description": "Creates and Manages the entire lifecycle of the orders and carts."
+    "repository" : {
+        "project_name": "Order Management Service",
+        "guid": "B4F9D636-E048-4F57-A4FA-AE904B6BFCCB",
+        "description": "Creates and Manages the entire lifecycle of the orders and carts."
+        "jira_instance_url": "http://host.docker.internal:8080",
+        "jira_project_key": "ORDERMAN",
+    },
+    "branch" : {
+        "project_name": "Order Management Service",
+        "guid": "B4F9D636-E048-4F57-A4FA-AE904B6BFCCB",
+        "description": "Creates and Manages the entire lifecycle of the orders and carts."
+        "jira_instance_url": "http://host.docker.internal:8080",
+        "jira_project_key": "ORDERMAN",
+    }
 }
