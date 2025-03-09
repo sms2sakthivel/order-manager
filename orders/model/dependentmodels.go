@@ -1,12 +1,12 @@
 package model
 
+// UserResponse represents the user information returned by the API
 type UserResponse struct {
-	ID       uint   `json:"user_id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Username string `json:"user_name"`
 }
 
+// ProductResponse represents the product information returned by the API
 type ProductResponse struct {
 	ID          uint   `json:"product_id"`
 	Name        string `json:"product_name"`
