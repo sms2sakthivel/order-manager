@@ -1,11 +1,13 @@
 package model
 
+
 type UserResponse struct {
 	ID       uint   `json:"user_id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Username string `json:"user_name"`
+	Username  string `json:"username"`
 }
+
 
 type ProductResponse struct {
 	ID          uint   `json:"product_id"`
