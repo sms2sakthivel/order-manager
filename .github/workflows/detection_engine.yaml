@@ -17,6 +17,7 @@ jobs:
             -e REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2) \
             -e PR_NUMBER=${{ github.event.pull_request.number }} \
             -e PR_URL=${{ github.event.pull_request.html_url }} \
+            -v ./data:/app/data \
             sms2sakthivel/adapt_detection_engine_github:latest
 
       - name: Verify Running Container
