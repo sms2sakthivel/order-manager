@@ -17,3 +17,4 @@ type CartItemResponse struct {
 func (cir *CartItemRequest) GetDBObject() *CartItem {
 	return &CartItem{ProductID: cir.ProductID, Quantity: cir.Quantity, Discount: cir.Discount}
 }
+

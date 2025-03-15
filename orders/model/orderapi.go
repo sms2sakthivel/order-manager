@@ -6,14 +6,12 @@ type OrderCreateRequest struct {
 }
 
 type OrderUpdateRequest struct {
-	ID     uint `json:"order_id"`
 	CartID uint `json:"cart_id"`
 }
 
 type OrderResponse struct {
-	ID     uint         `json:"order_id"`
-	CartID uint         `json:"cart_id"`
-	Cart   CartResponse `json:"cart,omitempty"`
+	CartID uint `json:"cart_id"`
+	Cart   CartResponse `json:"cart"`
 }
 
 func (ocr *OrderCreateRequest) GetOrderDBObject() *Order {

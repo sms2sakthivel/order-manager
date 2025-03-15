@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+
 type CartService struct {
 	Repo repository.CartRepository
 }
@@ -43,13 +44,11 @@ func (s *CartService) CreateCart(cartReq *model.CartCreateRequest) (*model.CartR
 	}
 	cart := cartReq.GetDBObject()
 
+	var products = make(map[uint]*model.ProductResponse)
+
 	// Step 2: Check if all the ProductIDs are Valid
-	var products map[uint]*model.ProductResponse = map[uint]*model.ProductResponse{}
-	var productIds []uint = []uint{}
 	for _, cartItem := range cart.CartItems {
-		productIds = append(productIds, cartItem.ProductID)
-	}
-	for _, productID := range productIds {
+		productID := cartItem.ProductID
 		product, err := GetProductByID(productID)
 		if err != nil {
 			return nil, err

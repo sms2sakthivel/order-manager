@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
-
-	"github.com/gofiber/fiber/v3/client"
-	"github.com/sms2sakthivel/order-manager/orders/model"
+	client "github.com/sms2sakthivel/order-manager/orders/model"
 )
 
 func GetUserByID(id uint) (*model.UserResponse, error) {

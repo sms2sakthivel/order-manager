@@ -7,8 +7,7 @@ import (
 )
 
 type OrderService struct {
-	CartService CartService
-	Repo        repository.OrderRepository
+	Repo repository.OrderRepository
 }
 
 func (os *OrderService) InitCartService(db *gorm.DB) {
