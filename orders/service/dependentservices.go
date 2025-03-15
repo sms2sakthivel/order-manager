@@ -21,9 +21,7 @@ func GetUserByID(id uint) (*model.UserResponse, error) {
 
 	fmt.Printf("Status: %d\n", resp.StatusCode())
 	fmt.Printf("Body: %s\n", string(resp.Body()))
-	if resp.StatusCode() != 200 {
-		return nil, err
-	}
+	if resp.StatusCode() != 200 { return nil, fmt.Errorf("User not found") }
 	var userResponse model.UserResponse
 	err = json.Unmarshal(resp.Body(), &userResponse)
 	if err != nil {
