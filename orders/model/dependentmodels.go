@@ -1,10 +1,9 @@
 package model
 
+// UserResponse represents the user details in the response.
 type UserResponse struct {
-	ID       uint   `json:"user_id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Username string `json:"user_name"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type ProductResponse struct {
