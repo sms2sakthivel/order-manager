@@ -24,12 +24,7 @@ func GetUserByID(id uint) (*model.UserResponse, error) {
 	if resp.StatusCode() != 200 {
 		return nil, err
 	}
-	var userResponse model.UserResponse
-	err = json.Unmarshal(resp.Body(), &userResponse)
-	if err != nil {
-		return nil, err
-	}
-	return &userResponse, nil
+	return nil, nil
 }
 
 func GetProductByID(id uint) (*model.ProductResponse, error) {
