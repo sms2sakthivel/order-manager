@@ -1,12 +1,12 @@
 package model
 
+// UserResponse model used for user details.
 type UserResponse struct {
-	ID       uint   `json:"user_id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Username string `json:"user_name"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
 }
-
+ 
+// ProductResponse model used for product details.
 type ProductResponse struct {
 	ID          uint   `json:"product_id"`
 	Name        string `json:"product_name"`
