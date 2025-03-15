@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Start Prebuilt Docker Container
         run: |
-          docker run --name detection_engine \
+          docker run --rm --name detection_engine \
             -e REPO_OWNER=${{ github.repository_owner }} \
             -e REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2) \
             -e PR_NUMBER=${{ github.event.pull_request.number }} \
